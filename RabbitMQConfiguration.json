@@ -1,0 +1,106 @@
+{
+  "rabbit_version": "3.8.3",
+  "rabbitmq_version": "3.8.3",
+  "users": [
+    {
+      "name": "transcode_user",
+      "password_hash": "LFh9G7wDERfb+4exF1xbBntX4tOFNsXxKt998OF9Tc8RYzDs",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "guest",
+      "password_hash": "Kwdgv+TX1jScXC389arCpVUFjkPoAu6do3YYbDqBXpvZ5l+G",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "video.transcode.vhost"
+    },
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "transcode_user",
+      "vhost": "video.transcode.vhost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "video.transcode.vhost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [
+    {
+      "user": "transcode_user",
+      "vhost": "video.transcode.vhost",
+      "exchange": "",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "parameters": [
+  ],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@Win10ProVM"
+    },
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-XhqnQHjJM6p8rLRpdTD2Qg"
+    }
+  ],
+  "policies": [
+  ],
+  "queues": [
+    {
+      "name": "transcoder.queue",
+      "vhost": "video.transcode.vhost",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "video.transcode.exchange",
+      "vhost": "video.transcode.vhost",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "video.transcode.exchange",
+      "vhost": "video.transcode.vhost",
+      "destination": "transcoder.queue",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {
+      }
+    }
+  ]
+}
